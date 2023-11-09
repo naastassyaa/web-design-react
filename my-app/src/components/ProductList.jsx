@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Container, Row} from 'react-bootstrap';
 import ProductCard from "./ProductCard";
+import {Link} from "react-router-dom";
 
 function ProductList() {
     const products = [
@@ -38,7 +39,7 @@ function ProductList() {
             </Row>
             <div className="text-center">
                 <Button variant="primary" style={{backgroundColor:"#333", borderStyle:"none"}}>
-                    Show More
+                    <Link to={"/catalog"} style={{textDecoration: "none", color: "white"}}>Show More</Link>
                 </Button>
             </div>
         </Container>
