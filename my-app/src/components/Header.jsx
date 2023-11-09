@@ -1,16 +1,11 @@
-import React, { useState } from 'react';
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import React from 'react';
+import { Navbar, Nav, Container} from 'react-bootstrap';
 import styles from '../styles/Header.module.css';
+import {Link} from "react-router-dom";
 
 const Header = () => {
-    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!isMobileMenuOpen);
-    };
-
     return (
-        <Navbar expand="lg" className={styles.header}>
+        <Navbar expand={"lg"} className={styles.header}>
             <Container fluid className="mx-2">
                 <Navbar.Brand href="#" className={styles.logo}>
                     <img
@@ -24,20 +19,18 @@ const Header = () => {
 
                 <Navbar.Toggle
                     aria-controls="responsive-navbar-nav"
-                    onClick={toggleMobileMenu}
-
                 />
 
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mx-auto" activeKey="/">
-                        <Nav.Link href="/" className={styles.navItem}>
-                            Home
+                        <Nav.Link className={styles.navItem}>
+                            <Link className={styles.navItem} to={"/"}>Home</Link>
                         </Nav.Link>
-                        <Nav.Link href="#" className={styles.navItem}>
-                            Catalog
+                        <Nav.Link className={styles.navItem}>
+                            <Link className={styles.navItem} to={"/catalog"}>Catalog</Link>
                         </Nav.Link>
-                        <Nav.Link href="#" className={styles.navItem}>
-                            Cart
+                        <Nav.Link className={styles.navItem}>
+                            <Link className={styles.navItem} to={"/cart"}>Cart</Link>
                         </Nav.Link>
                     </Nav>
                     <Nav>
@@ -47,16 +40,6 @@ const Header = () => {
                     </Nav>
                 </Navbar.Collapse>
             </Container>
-            {isMobileMenuOpen && (
-                <div className={styles.mobileMenu}>
-                    <NavDropdown title="Menu" id="collasible-nav-dropdown">
-                        <NavDropdown.Item href="#">Home</NavDropdown.Item>
-                        <NavDropdown.Item href="#">Catalog</NavDropdown.Item>
-                        <NavDropdown.Item href="#">Cart</NavDropdown.Item>
-                        <NavDropdown.Item href="#">Login</NavDropdown.Item>
-                    </NavDropdown>
-                </div>
-            )}
         </Navbar>
     );
 };
