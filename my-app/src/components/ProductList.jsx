@@ -1,34 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Container, Row} from 'react-bootstrap';
 import ProductCard from "./ProductCard";
 import {Link} from "react-router-dom";
+import products from "../data/data";
 
 function ProductList() {
-    const products = [
-        {
-            imageSrc: '/images/sport_pants.png',
-            title: 'Sport pants',
-            description: 'Sports pants that can be worn both for running and work. Comfortable, beautiful and at a good price. Available in three sizes S, M and L, and in three colours black, beige and light green',
-            link: '',
-        },
-        {
-            imageSrc: '/images/basic_hoodie.png',
-            title: 'Basic hoodie',
-            description: 'A basic hoodie for walking and sports in winter. Available in 5 colours: black, blue, dark grey, brown and white. Sizes: S, M, L, XL',
-            link: '',
-        },
-        {
-            imageSrc: '/images/sportswear.png',
-            title: 'Sportswear',
-            description: 'Sportswear, a great option in summer, for everyday wear or for sports. Available in three colours: black, white and grey. Sizes: S, M, L',
-            link: '',
-        },
-    ];
+    const [showAllProducts, setShowAllProducts] = useState(false);
+    const displayedProducts = showAllProducts ? products : products.slice(0, 3);
 
     return (
-        <Container style={{marginTop: "100px", marginBottom:"50px"}}>
+        <Container style={{ marginTop: "100px", marginBottom: "50px" }}>
             <Row>
-                {products.map((product) => (
+                {displayedProducts.map((product) => (
                     <ProductCard
                         imageSrc={product.imageSrc}
                         title={product.title}
@@ -37,11 +20,27 @@ function ProductList() {
                     />
                 ))}
             </Row>
-            <div className="text-center">
-                <Button variant="primary" style={{backgroundColor:"#333", borderStyle:"none"}}>
-                    <Link to={"/catalog"} style={{textDecoration: "none", color: "white"}}>Show More</Link>
-                </Button>
-            </div>
+            {!showAllProducts ? (
+                <div className="text-center">
+                    <Button
+                        variant="primary"
+                        style={{ backgroundColor: "#333", borderStyle: "none" }}
+                        onClick={() => setShowAllProducts(true)}
+                    >
+                        Show More
+                    </Button>
+                </div>
+            ) : (
+                <div className="text-center">
+                    <Button
+                        variant="primary"
+                        style={{ backgroundColor: "#333", borderStyle: "none" }}
+                        onClick={() => setShowAllProducts(false)}
+                    >
+                        Hide
+                    </Button>
+                </div>
+            )}
         </Container>
     );
 }
