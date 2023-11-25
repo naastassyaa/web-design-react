@@ -1,18 +1,55 @@
-import React from 'react';
-import products from "../data/data";
-import {Button, Container, Form, Col, Row, Card, Image} from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Container, Form, Col, Row, Card, Image, Spinner, Alert} from 'react-bootstrap';
 import styles from '../styles/ItemDetails.module.css';
 import {Link} from "react-router-dom";
+import {getProductDetails} from "../reguests/products";
 
 const ItemDetails = ({id}) => {
-    const product = products[id - 1];
+    const [product, setProduct] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        getProductDetails(id)
+            .then((product) => {
+                setProduct(product);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return (
+            <Container className={styles.container}>
+                <Row className="justify-content-center">
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </Row>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className={styles.container}>
+                <Row className="justify-content-center">
+                    <Alert variant="danger">
+                        Error fetching data. Please try again later.
+                    </Alert>
+                </Row>
+            </Container>
+        );
+    }
 
     return (
         <Container className={styles.container}>
             <Card>
                 <Row>
                     <Col sm={4}>
-                        <Image src={product.imageSrc} alt={product.title} fluid className={styles.picture}/>
+                        <Image src={product.image} alt={product.title} fluid className={styles.picture}/>
                     </Col>
                     <Col sm={8}>
                         <Card.Body>
@@ -35,9 +72,9 @@ const ItemDetails = ({id}) => {
                                     <Col md="4">
                                         <Form.Control as="select">
                                             <option value="">Select Color</option>
-                                            {product.color_to_buy.map((choice) => (
-                                                <option key={choice} value={choice}>
-                                                    {choice}
+                                            {product.colors.map((choice) => (
+                                                <option key={choice.id} value={choice.id}>
+                                                    {choice.name}
                                                 </option>))}
                                         </Form.Control>
                                     </Col>
@@ -50,9 +87,9 @@ const ItemDetails = ({id}) => {
                                     <Col md="4">
                                         <Form.Control as="select">
                                             <option value="">Select Size</option>
-                                            {product.size.map((choice) => (
-                                                <option key={choice} value={choice}>
-                                                    {choice}
+                                            {product.sizes.map((choice) => (
+                                                <option key={choice.id} value={choice.id}>
+                                                    {choice.name}
                                                 </option>))}
                                         </Form.Control>
                                     </Col>

@@ -4,7 +4,7 @@ import styles from '../styles/ProductList.module.css';
 import {Link} from "react-router-dom";
 
 function ProductCatalogCard(props) {
-    const { imageSrc, title, description, price, link } = props;
+    const { id, imageSrc, title, description, price} = props;
 
     return (
         <Col md={3}>
@@ -14,7 +14,7 @@ function ProductCatalogCard(props) {
                     <Card.Title className={styles.cardTitle}>{title}</Card.Title>
                     <Card.Text className={styles.cardText}>{description}</Card.Text>
                     <Card.Text className={styles.cardText}>Price: ${price}</Card.Text>
-                    <Button variant="primary" style={{backgroundColor:"#333", borderStyle:"none"}}><Link to={"/catalog/"+link} className={styles.showMore}>Show More</Link></Button>
+                    <Button variant="primary" style={{backgroundColor:"#333", borderStyle:"none"}}><Link to={"/catalog/" + id} className={styles.showMore}>Show More</Link></Button>
                 </Card.Body>
             </Card>
         </Col>

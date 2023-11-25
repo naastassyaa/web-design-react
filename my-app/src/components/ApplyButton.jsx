@@ -1,27 +1,23 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import styles from '../styles/ApplyButton.module.css';
-import products from "../data/data";
+import {getAllColors, getFilteredProducts} from "../reguests/products";
 
-
-const filterData = (data, setData, states, filters) => {
-
-    let filteredData = data;
-    for (let i = 0; i < states.length; i++) {
-        const state = states[i];
-        const filter = filters[i];
-
-        if (state && filter) {
-            filteredData = filter(state, filteredData);
-        }
-    }
-
-    setData(filteredData);
+const filter = ([color, size], setData) => {
+    getFilteredProducts(color, size)
+        .then((products) => {
+            setData(products)
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 }
-const ApplyButton = ({setData, states, filters}) => {
+
+
+const ApplyButton = ({setData, states}) => {
     return (
         <Button
-            variant="primary" className={styles.apply} onClick={() => filterData(products, setData, states, filters)}>
+            variant="primary" className={styles.apply} onClick={() => filter(states, setData)}>
             Apply
         </Button>
     );

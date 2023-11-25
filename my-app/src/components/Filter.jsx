@@ -9,8 +9,8 @@ const Filter = ({name, choices, state, setState}) => {
                           onChange={(e) => setState(e.target.value)}>
                 <option value="">Select {name}</option>
                 {choices.map((choice) => (
-                    <option key={choice} value={choice}>
-                        {choice}
+                    <option key={choice.id} value={choice.id}>
+                        {choice.name}
                     </option>
                 ))}
             </Form.Control>
