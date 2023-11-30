@@ -3,6 +3,8 @@ import {Button, Container, Form, Col, Row, Card, Image, Spinner, Alert} from 're
 import styles from '../styles/ItemDetails.module.css';
 import {Link} from "react-router-dom";
 import {getProductDetails} from "../reguests/products";
+import {useDispatch} from "react-redux";
+import {addProduct} from "../store/action";
 
 const ItemDetails = ({id}) => {
     const [product, setProduct] = useState([]);
@@ -19,6 +21,28 @@ const ItemDetails = ({id}) => {
                 setLoading(false);
             });
     }, []);
+
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedSize, setSelectedSize] = useState('');
+    const [selectedQuantity, setSelectedQuantity] = useState(1);
+
+    const handleColorChange = (event) => {
+        setSelectedColor(event.target.value);
+    };
+
+    const handleSizeChange = (event) => {
+        setSelectedSize(event.target.value);
+    };
+
+    const handleQuantityChange = (event) => {
+        setSelectedQuantity(parseInt(event.target.value, 10));
+    };
+
+    const dispatch = useDispatch();
+
+    const handleAddToCart = () => {
+        dispatch(addProduct(id, selectedColor, selectedSize, selectedQuantity, product.price));
+    };
 
     if (loading) {
         return (
@@ -61,39 +85,42 @@ const ItemDetails = ({id}) => {
                                         Quantity
                                     </Form.Label>
                                     <Col md="2">
-                                        <Form.Control type="number"/>
+                                        <Form.Control type="number" min={1} value={selectedQuantity}
+                                                      onChange={handleQuantityChange}/>
                                     </Col>
                                 </Form.Group>
                                 <Row className={styles.fieldsRow}>
-                                <Form.Group as={Row}>
-                                    <Form.Label column md="2">
-                                        Color
-                                    </Form.Label>
-                                    <Col md="4">
-                                        <Form.Control as="select">
-                                            <option value="">Select Color</option>
-                                            {product.colors.map((choice) => (
-                                                <option key={choice.id} value={choice.id}>
-                                                    {choice.name}
-                                                </option>))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label column md="2">
+                                            Color
+                                        </Form.Label>
+                                        <Col md="4">
+                                            <Form.Control as="select" value={selectedColor}
+                                                          onChange={handleColorChange}>
+                                                <option value="">Select Color</option>
+                                                {product.colors.map((choice) => (
+                                                    <option key={choice.id} value={choice.name}>
+                                                        {choice.name}
+                                                    </option>))}
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
 
-                                <Form.Group as={Row}>
-                                    <Form.Label column md="2">
-                                        Size
-                                    </Form.Label>
-                                    <Col md="4">
-                                        <Form.Control as="select">
-                                            <option value="">Select Size</option>
-                                            {product.sizes.map((choice) => (
-                                                <option key={choice.id} value={choice.id}>
-                                                    {choice.name}
-                                                </option>))}
-                                        </Form.Control>
-                                    </Col>
-                                </Form.Group>
+                                    <Form.Group as={Row}>
+                                        <Form.Label column md="2">
+                                            Size
+                                        </Form.Label>
+                                        <Col md="4">
+                                            <Form.Control as="select" value={selectedSize}
+                                                          onChange={handleSizeChange}>
+                                                <option value="">Select Size</option>
+                                                {product.sizes.map((choice) => (
+                                                    <option key={choice.id} value={choice.name}>
+                                                        {choice.name}
+                                                    </option>))}
+                                            </Form.Control>
+                                        </Col>
+                                    </Form.Group>
                                 </Row>
                             </Form>
                         </Card.Body>
@@ -104,8 +131,11 @@ const ItemDetails = ({id}) => {
                         <Card.Text className={styles.price}>Price: ${product.price}</Card.Text>
                     </Col>
                     <Col sm={4} className={styles.buttonsRow}>
-                        <Button variant="primary" className={styles.buttons}><Link to={"/catalog"} className={styles.goBack}>Go back</Link></Button>
-                        <Button variant="primary" className={styles.buttons}>Add to Cart</Button>
+                        <Button variant="primary" className={styles.buttons}><Link to={"/catalog"}
+                                                                                   className={styles.goBack}>Go
+                            back</Link></Button>
+                        <Button variant="primary" className={styles.buttons} onClick={handleAddToCart}><Link to={"/cart"} className={styles.goBack}>Add to
+                            Cart</Link></Button>
                     </Col>
                 </Row>
             </Card>
