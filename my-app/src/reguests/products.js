@@ -1,7 +1,7 @@
 import axios from 'axios';
 export async function getAllProducts(limit) {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/product/general?limit=${limit}`);
+        const response = await axios.get(`http://127.0.0.1:8000/product/general`, { params: { limit: limit } });
         return response.data;
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -40,7 +40,7 @@ export async function getAllSizes(limit) {
 
 export async function getFilteredProducts(color, size) {
     try {
-        const response = await axios.get(`http://127.0.0.1:8000/product/general?color=${color}&size=${size}`);
+        const response = await axios.get(`http://127.0.0.1:8000/product/general`, { params: { color: color, size: size } });
         return response.data;
     } catch (error) {
         console.error('Error fetching products:', error);

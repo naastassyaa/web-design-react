@@ -8,6 +8,7 @@ function ProductList() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showAllProducts, setShowAllProducts] = useState(false);
+
     useEffect(() => {
         let limit = 3;
         if (showAllProducts) {

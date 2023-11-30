@@ -6,9 +6,6 @@ import ApplyButton from "./ApplyButton";
 import {getAllColors, getAllSizes} from "../reguests/products";
 
 
-
-
-
 const OptionsCatalog = ({data, setData}) => {
     const [size, setSize] = useState(0)
     const [color, setColor] = useState(0)
